@@ -1,6 +1,7 @@
 /*
- * Create a list that holds all of your cards
+ * Needed variables initialization.
  */
+let cards;
 let classNames  = [
   "fa fa-diamond",
   "fa fa-paper-plane-o",
@@ -21,8 +22,16 @@ let classNames  = [
   ]
 let openCards = [];
 let openCardsIndex = [];
-let deck = document.getElementById("deck")
+let totalMatches = 0;
+let totalSeconds = -1;
+let totalMoves = 0;
+let deck = document.getElementById("deck");
+let restart = document.getElementById("restart");
+let stars = document.getElementsByClassName("stars")[0];
 
+/*
+ * Needed functions.
+ */
 
 const cardHtml = (card) => 
   `<li class="card">
@@ -32,7 +41,6 @@ const addCard = (El,index) => {
   openCards.push(El.children[0].className.split(" ")[1].substring(3));
   openCardsIndex.push(index);
 }
-
 const isMatch = openCards => openCards[0] === openCards[1] && openCardsIndex[0] !== openCardsIndex[1]
 const openMatchedCards = openCardsIndex => {
   cards = Array.from(cards);
@@ -54,17 +62,37 @@ const removeOpenCards = () => {
   openCardsIndex = [];
   return console.log("Removed open cards.")
 }
-
 const makeRed = () => {
   cards[openCardsIndex[0]].classList.add("error");
   cards[openCardsIndex[1]].classList.add("error");
 }
-// timer https://stackoverflow.com/questions/5517597/plain-count-up-timer-in-javascript
+const won = () =>  {
+  swal({
+  title: "YOU WON!",
+  text: `You got ${stars.children.length} stars in ${totalSeconds} seconds!`,
+  icon: "success",
+    })
+  .then((value) => {
+    if (value) {
+      startGame();
+    }
+  });
+}
+const setScore = count  => {
+  if (count === 20) {
+    stars.removeChild(stars.children[0]);
+    totalMoves = 0;
+    return  0;
+  } 
+}
+
+/* 
+ * timer function from : https://stackoverflow.com/questions/5517597/plain-count-up-timer-in-javascript
+ */
 
 let minutesLabel = document.getElementById("minutes");
 let secondsLabel = document.getElementById("seconds");
-let totalSeconds = 0;
-//setInterval(setTime, 1000);
+setInterval(setTime, 1000);
 
 function setTime() {
   ++totalSeconds;
@@ -79,13 +107,6 @@ function pad(val) {
   } else {
     return valString;
 }}
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 
@@ -103,45 +124,65 @@ function shuffle(array) {
   return array;
 }
 
-shuffle(classNames)
-for (const className of classNames) {
-  deck.insertAdjacentHTML('beforeend', cardHtml(className));
-}
-
-let cards = document.getElementsByClassName("card")
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
+/* 
+ * This functions starts the game and sets the needed variables back to default value.
  */
 
-for (let [i,card] of Array.from(cards).entries() ) {
-  card.addEventListener("click", event => {
-    if (openCards.length > 2) return console.log("More than 2 elementss Already")
-    card.classList.add("open");
-    card.classList.add("show");
-    addCard(card,i);
-    if (openCards.length === 2 && !isMatch(openCards)) {
-      makeRed();
-      setTimeout(() => removeOpenCards(),200);
-      
-    } else if (openCards.length === 1 ) {
-      return "One element is showing."
-    } else {
-      
-      openMatchedCards(openCardsIndex)
-    }
-    
-  })
+function startGame (argument) {
+  openCards = [];
+  openCardsIndex = [];
+  totalSeconds = -1;
+  totalMoves = 0;
+  totalMatches = 0;
+  deck.innerHTML = "";
+  shuffle(classNames)
+  for (const className of classNames) {
+    deck.insertAdjacentHTML('beforeend', cardHtml(className));
+  }
+
+  cards = document.getElementsByClassName("card")
+
+
+  for (let [i,card] of Array.from(cards).entries() ) {
+    card.addEventListener("click", event => {
+      if (openCards.length > 2) return console.log("More than 2 elementss Already")
+      card.classList.add("open");
+      card.classList.add("show");
+      addCard(card,i);
+      if (openCards.length === 2 && !isMatch(openCards)) {
+        makeRed();
+        setTimeout(() => removeOpenCards(),200);  
+      } else if (openCards.length === 1 ) {
+        return "One element is showing."
+      } else {     
+        openMatchedCards(openCardsIndex)
+        totalMatches++;
+        if (totalMatches > 7) {
+          won();
+        }
+      }
+      totalMoves++;
+      setScore(totalMoves)
+    })
+  }
 }
 
+restart.addEventListener("click", event => {
+  swal({
+  title: "Are you sure?",
+  text: "Once you restart you can't recover your current game!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+  .then((value) => {
+    if (value) {
+      startGame();
+    }
+  });
+});
 
-
+// We start the game!
+startGame();
 
 
