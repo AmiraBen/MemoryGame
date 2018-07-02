@@ -1,7 +1,31 @@
 /*
  * Create a list that holds all of your cards
  */
+let cards  = [
+  "fa fa-diam",
+  "fa fa-pape",
+  "fa fa-anch",
+  "fa fa-bolt",
+  "fa fa-cube",
+  "fa fa-anch",
+  "fa fa-leaf",
+  "fa fa-bicy",
+  "fa fa-diam",
+  "fa fa-bomb",
+  "fa fa-leaf",
+  "fa fa-bomb",
+  "fa fa-bolt",
+  "fa fa-bicy",
+  "fa fa-pape",
+  "fa fa-cube"
+  ]
 
+let deck = document.getElementById("deck")
+
+const cardHtml = (card) => 
+  `<li class="card">
+      <i class="${card}"></i>
+  </li>`;
 
 /*
  * Display the cards on the page
@@ -11,19 +35,26 @@
  */
 
 // Shuffle function from http://stackoverflow.com/a/2450976
+
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+  var currentIndex = array.length, temporaryValue, randomIndex;
 
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
 
-    return array;
+  return array;
 }
+
+shuffle(cards)
+for (const card of cards) {
+  deck.insertAdjacentHTML('beforeend', cardHtml(card));
+}
+
 
 
 /*
