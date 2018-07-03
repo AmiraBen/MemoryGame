@@ -1,33 +1,34 @@
 /*
  * Needed variables initialization.
  */
-let cards;
-let classNames  = [
-  "fa fa-diamond",
-  "fa fa-paper-plane-o",
-  "fa fa-anchor",
-  "fa fa-bolt",
-  "fa fa-cube",
-  "fa fa-anchor",
-  "fa fa-leaf",
-  "fa fa-bicycle",
-  "fa fa-diamond",
-  "fa fa-bomb",
-  "fa fa-leaf",
-  "fa fa-bomb",
-  "fa fa-bolt",
-  "fa fa-bicycle",
-  "fa fa-paper-plane-o",
-  "fa fa-cube"
-  ]
-let openCards = [];
-let openCardsIndex = [];
-let totalMatches = 0;
-let totalSeconds = -1;
-let totalMoves = 0;
-let deck = document.getElementById("deck");
-let restart = document.getElementById("restart");
-let stars = document.getElementsByClassName("stars")[0];
+let cards,
+    classNames  = [
+      "fa fa-diamond",
+      "fa fa-paper-plane-o",
+      "fa fa-anchor",
+      "fa fa-bolt",
+      "fa fa-cube",
+      "fa fa-anchor",
+      "fa fa-leaf",
+      "fa fa-bicycle",
+      "fa fa-diamond",
+      "fa fa-bomb",
+      "fa fa-leaf",
+      "fa fa-bomb",
+      "fa fa-bolt",
+      "fa fa-bicycle",
+      "fa fa-paper-plane-o",
+      "fa fa-cube"
+      ],
+    openCards = [],
+    openCardsIndex = [],
+    totalMatches = 0,
+    totalSeconds = -1,
+    totalMoves = 0,
+    deck = document.getElementById("deck"),
+    restart = document.getElementById("restart"),
+    stars = document.getElementsByClassName("stars")[0]
+    moves = document.getElementsByClassName("moves")[0];
 
 /*
  * Needed functions.
@@ -74,7 +75,7 @@ const makeRed = () => {
 const won = () =>  {
   swal({
   title: "YOU WON!",
-  text: `You got ${stars.children.length} star(s) in ${totalSeconds} seconds!`,
+  text: `You got ${stars.children.length} star(s) in ${totalSeconds} seconds with ${totalMoves} moves!`,
   icon: "success",
     })
   .then((value) => {
@@ -84,7 +85,8 @@ const won = () =>  {
   });
 }
 const setScore = count  => {
-  if (count === 20 && stars.children.length > 0) {
+  moves.innerHTML  = count;
+  if (count === 20 && stars.children.length > 1) {
     stars.removeChild(stars.children[0]);
     totalMoves = 0;
     return  0;
@@ -141,6 +143,7 @@ function startGame (argument) {
   totalMoves = 0;
   totalMatches = 0;
   deck.innerHTML = "";
+  moves.innerHTML ="0";
   stars.innerHTML = starsHtml();
   shuffle(classNames)
   for (const className of classNames) {
@@ -156,6 +159,7 @@ function startGame (argument) {
       card.classList.add("open");
       card.classList.add("show");
       addCard(card,i);
+      if (openCards.length === 2 && (openCardsIndex[0] === openCardsIndex[1] )) return removeOpenCards();
       if (openCards.length === 2 && !isMatch(openCards)) {
         makeRed();
         totalMoves++;
