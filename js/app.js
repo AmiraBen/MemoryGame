@@ -158,17 +158,19 @@ function startGame (argument) {
       addCard(card,i);
       if (openCards.length === 2 && !isMatch(openCards)) {
         makeRed();
+        totalMoves++;
         setTimeout(() => removeOpenCards(),200);  
       } else if (openCards.length === 1 ) {
         return "One element is showing."
       } else {     
         openMatchedCards(openCardsIndex)
         totalMatches++;
+        totalMoves++;
         if (totalMatches > 7) {
           won();
         }
       }
-      totalMoves++;
+      
       setScore(totalMoves)
     })
   }
