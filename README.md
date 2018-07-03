@@ -1,7 +1,7 @@
 # Memory Game Project
 
 # Preview
-This game is about matching similiar cards. It is implemented using plain javascript. I used click event listeners to add functionality to the cards when they are clicked and added the logic for each card. Also the game includes scores and timers. Plus I made use of an external js libary for showing alerts. 
+This game is about matching similiar cards. It is implemented using plain javascript. I used click event listeners to add functionality to the cards when they are clicked and added the logic for each card. Also the game includes score and timer. Plus I made use of an external js libary for showing alerts. 
 
 # How to run the game
 `git clone https://github.com/AmiraBen/MemoryGame.git memoryGame && cd memoryGame && open index.html`
@@ -10,7 +10,7 @@ This game is about matching similiar cards. It is implemented using plain javasc
 
 # Game features: 
 * timer
-* stars scoring
+* stars scoring ( **the more moves you make the less stars you will have** )
 * elegant design
 
 # Dependencies: 
