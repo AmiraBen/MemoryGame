@@ -37,6 +37,10 @@ const cardHtml = (card) =>
   `<li class="card">
       <i class="${card}"></i>
   </li>`;
+const starsHtml = () => 
+  `<li><i class="fa fa-star"></i></li>
+   <li><i class="fa fa-star"></i></li>
+   <li><i class="fa fa-star"></i></li>`
 const addCard = (El,index) => {
   openCards.push(El.children[0].className.split(" ")[1].substring(3));
   openCardsIndex.push(index);
@@ -70,7 +74,7 @@ const makeRed = () => {
 const won = () =>  {
   swal({
   title: "YOU WON!",
-  text: `You got ${stars.children.length} stars in ${totalSeconds} seconds!`,
+  text: `You got ${stars.children.length} star(s) in ${totalSeconds} seconds!`,
   icon: "success",
     })
   .then((value) => {
@@ -80,12 +84,13 @@ const won = () =>  {
   });
 }
 const setScore = count  => {
-  if (count === 20) {
+  if (count === 20 && stars.children.length > 0) {
     stars.removeChild(stars.children[0]);
     totalMoves = 0;
     return  0;
   } 
 }
+
 
 /* 
  * timer function from : https://stackoverflow.com/questions/5517597/plain-count-up-timer-in-javascript
@@ -136,6 +141,7 @@ function startGame (argument) {
   totalMoves = 0;
   totalMatches = 0;
   deck.innerHTML = "";
+  stars.innerHTML = starsHtml();
   shuffle(classNames)
   for (const className of classNames) {
     deck.insertAdjacentHTML('beforeend', cardHtml(className));
