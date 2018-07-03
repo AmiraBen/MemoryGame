@@ -43,6 +43,7 @@ const addCard = (El,index) => {
 }
 const isMatch = openCards => openCards[0] === openCards[1] && openCardsIndex[0] !== openCardsIndex[1]
 const openMatchedCards = openCardsIndex => {
+  if (openCardsIndex[0] === openCardsIndex[1]) return console.log("Can't match the same card.");
   cards = Array.from(cards);
   cards[openCardsIndex[0]].classList.remove("open");
   cards[openCardsIndex[0]].classList.remove("show");
