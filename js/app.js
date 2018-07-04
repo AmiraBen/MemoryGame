@@ -91,9 +91,9 @@ const setScore = count  => {
   } 
 }
 
-function moveCounter() {
+const moveCounter = () => {
   totalMoves++;
-  moves.innerHTML = `${totalmoves} move`;
+  moves.innerHTML = totalMoves === 1 ? `${totalMoves} move` : `${totalMoves} moves`;
 }
 /* 
  * timer function from : https://stackoverflow.com/questions/5517597/plain-count-up-timer-in-javascript
@@ -144,7 +144,7 @@ function startGame (argument) {
   totalMoves = 0;
   totalMatches = 0;
   deck.innerHTML = "";
-  moves.innerHTML ="0";
+  moves.innerHTML ="0 moves";
   stars.innerHTML = starsHtml();
   shuffle(classNames)
   for (const className of classNames) {
