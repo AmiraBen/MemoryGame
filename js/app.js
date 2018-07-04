@@ -85,15 +85,16 @@ const won = () =>  {
   });
 }
 const setScore = count  => {
-  moves.innerHTML  = count;
-  if (count === 20 && stars.children.length > 1) {
+  if (count === 20 && count === 30) {
     stars.removeChild(stars.children[0]);
-    totalMoves = 0;
     return  0;
   } 
 }
 
-
+function moveCounter() {
+  totalMoves++;
+  moves.innerHTML = `${totalmoves} move`;
+}
 /* 
  * timer function from : https://stackoverflow.com/questions/5517597/plain-count-up-timer-in-javascript
  */
@@ -161,15 +162,15 @@ function startGame (argument) {
       addCard(card,i);
       if (openCards.length === 2 && (openCardsIndex[0] === openCardsIndex[1] )) return removeOpenCards();
       if (openCards.length === 2 && !isMatch(openCards)) {
+        moveCounter()
         makeRed();
-        totalMoves++;
         setTimeout(() => removeOpenCards(),200);  
       } else if (openCards.length === 1 ) {
         return "One element is showing."
       } else {     
+        moveCounter()
         openMatchedCards(openCardsIndex)
         totalMatches++;
-        totalMoves++;
         if (totalMatches > 7) {
           won();
         }
