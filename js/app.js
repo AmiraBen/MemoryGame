@@ -85,7 +85,7 @@ const won = () =>  {
   });
 }
 const setScore = count  => {
-  if (count === 20 && count === 30) {
+  if (count === 20 || count === 30) {
     stars.removeChild(stars.children[0]);
     return  0;
   } 
